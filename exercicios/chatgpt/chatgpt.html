@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terra Explorer GAMER</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  color: #00f7ff;
+}
+
+header {
+  text-align: center;
+  padding: 30px;
+  border-bottom: 2px solid #00f7ff;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  text-shadow: 0 0 10px #00f7ff;
+}
+
+nav {
+  margin-top: 15px;
+}
+
+nav button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: 1px solid #00f7ff;
+  background: transparent;
+  color: #00f7ff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+nav button:hover {
+  background: #00f7ff;
+  color: black;
+  box-shadow: 0 0 15px #00f7ff;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(0,255,255,0.05);
+  border: 1px solid #00f7ff;
+  padding: 20px;
+  border-radius: 10px;
+  transition: 0.3s;
+  position: relative;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #00f7ff;
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.hidden { display:none; }
+
+.quiz {
+  text-align:center;
+  margin-top: 40px;
+}
+
+input {
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #00f7ff;
+  background: transparent;
+  color: #00f7ff;
+}
+
+button.quiz-btn {
+  margin-top: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🌍 Terra Explorer</h1>
+  <nav>
+    <button onclick="trocar('home')">HOME</button>
+    <button onclick="trocar('quiz')">QUIZ</button>
+  </nav>
+</header>
+
+<div id="home" class="container"></div>
+
+<div id="quiz" class="hidden">
+  <div class="quiz">
+    <h2>🧠 QUIZ</h2>
+    <p id="pergunta"></p>
+    <input id="resposta">
+    <br>
+    <button class="quiz-btn" onclick="verificar()">RESPONDER</button>
+    <p id="resultado"></p>
+  </div>
+</div>
+
+<script>
+const dados = [
+  { titulo: "🌊 ÁGUA", texto: "70% da Terra é água" },
+  { titulo: "🌋 VULCÕES", texto: "Existem vulcões ativos" },
+  { titulo: "🌎 GEOIDE", texto: "A Terra não é perfeitamente redonda" },
+  { titulo: "🧲 MAGNETISMO", texto: "Protege contra radiação solar" }
+];
+
+const home = document.getElementById("home");
+
+function carregarCards() {
+  home.innerHTML = "";
+  dados.forEach(c => {
+    home.innerHTML += `
+      <div class="card">
+        <h3>${c.titulo}</h3>
+        <p>${c.texto}</p>
+      </div>
+    `;
+  });
+}
+
+function trocar(p) {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById(p).classList.remove("hidden");
+}
+
+// QUIZ
+let atual = 0;
+const perguntas = [
+  { p: "% de água na Terra?", r: "70" },
+  { p: "Terra é perfeita?", r: "nao" }
+];
+
+function carregarQuiz() {
+  document.getElementById("pergunta").innerText = perguntas[atual].p;
+}
+
+function verificar() {
+  let resp = document.getElementById("resposta").value.toLowerCase();
+
+  if(resp.includes(perguntas[atual].r)) {
+    document.getElementById("resultado").innerText = "✔️ CORRETO";
+  } else {
+    document.getElementById("resultado").innerText = "❌ ERROU";
+  }
+
+  atual = (atual + 1) % perguntas.length;
+  carregarQuiz();
+}
+
+carregarCards();
+carregarQuiz();
+</script>
+
+</body>
+</html>
